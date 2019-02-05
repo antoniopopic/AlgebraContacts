@@ -37,3 +37,9 @@ CREATE TABLE IF NOT EXISTS contacts(
 	contact_data TEXT NOT NULL,
 	person_id INT UNSIGNED NOT NULL
 ) ENGINE=InnoDB;
+
+ALTER TABLE users ADD FOREIGN KEY (role_id) REFERENCES roles(id);
+ALTER TABLE sessions ADD FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE persons ADD FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE contacts ADD FOREIGN KEY (person_id) REFERENCES persons(id);
+
