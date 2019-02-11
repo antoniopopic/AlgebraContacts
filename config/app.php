@@ -2,7 +2,8 @@
 
 return[
     'name' => 'Algebra Contacts',
-    'error_reporting' => 1 
+    'error_reporting' => E_ALL,
+    'display_errors' => true 
 ];
 
 ?>
