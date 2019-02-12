@@ -35,16 +35,17 @@ $update = $db->update('users', 2,[
 	'name'	   => 'Ivan'
 ]);
 
-$insert = $db->insert('users',[
+/* $insert = $db->insert('users',[
 	'name'	   => 'Iva',
 	'username' => 'iva',
 	'password' => '123456',
 	'salt'	   => '654654',
 	'role_id'  => '1'
-]);
+]); */
+
 
 echo '<pre>';
-var_dump($find);
+var_dump($update);
 
 Helper::getFooter();
 ?>

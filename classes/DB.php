@@ -1,16 +1,18 @@
 <?php
 
 class DB{
+
     private static $instance = null;
     private $config;
     private $conn;
     private $query;
     private $error = false;
     private $results;
-    private $count = 0; 
+    private $count = 0;
 
-    //Constructor
+    // Constructor
     private function __construct(){
+
         $this->config = Config::get('database');
 
         $driver = $this->config['driver'];
@@ -19,22 +21,21 @@ class DB{
         $user = $this->config[$driver]['user'];
         $pass = $this->config[$driver]['pass'];
         $charset = $this->config[$driver]['charset'];
-        $dsn = $driver. ':dbname=' . $db_name . ';host=' . $host .';charset='. $charset; 
+        $dsn = $driver . ':dbname=' . $db_name . ';host=' . $host . ';charset=' . $charset;
 
-        try{
+        try {
             $this->conn = new PDO($dsn, $user, $pass);
-        }
-        catch(PDOException $e){
+        } catch (PDOException $e) {
             die($e->getMessage());
         }
     }
-    
-    //Singleton pattern
+
+    // Singleton pattern
     public static function getInstance(){
-        if(!self::$instance){
+        if(!self::$instance) {
             self::$instance = new self();
-        }        
-        return self::$instance; 
+        }
+        return self::$instance;
     }
 
     private function query($sql, $params = array()){
@@ -42,8 +43,10 @@ class DB{
 
         if($this->query = $this->conn->prepare($sql)){
             
-            if(!empty($params)){
-                /* for ($i=0; $i<count($params); $i++){
+           
+            if (!empty($params)) {
+            
+                /* for ($i=0; $i < count($params); $i++) { 
                     $this->query->bindValue($i+1, $params[$i]);
                 } */
                 $counter = 1;
@@ -51,23 +54,19 @@ class DB{
                     $this->query->bindValue($counter, $param);
                     $counter++;
                 }
-
             }
+
             if($this->query->execute()){
-                return $this->result = $this->query->fetchAll(Config::get('database')['fetch']);
+                $this->result = $this->query->fetchAll(Config::get('database')['fetch']);
                 $this->count = $this->query->rowCount();
             }else{
-                $this->error=true;
-            }
-            
+                $this->error = true;
+            }            
         }
         return $this;
-
-        
     }
 
     private function action($action, $table, $where = array()){
-        
         if (count($where) === 3) {
             $operators = array('=', '<', '>', '<=', '>=');
 
@@ -91,17 +90,16 @@ class DB{
         }
         return false;
     }
-    
 
     public function get($columns, $table, $where = array()){
         return $this->action("SELECT $columns", $table, $where);
-    }    
+    }
 
     public function find($id, $table){
         return $this->action("SELECT *", $table, ['id', '=', $id]);
     }
 
-    public function delete(){
+    public function delete($table, $where = array()){
         return $this->action("DELETE", $table, $where);
     }
 
@@ -113,13 +111,13 @@ class DB{
 
         foreach ($fields as $key => $field) {
             $values .= '?';
-            if(x<$field_num){
+            if ($x < $field_num) {
                 $values .= ',';
             }
             $x++;
         }
 
-        $sql = "INSERT INTO $table($keys) VALUES ($values)";
+        $sql = "INSERT INTO $table ($keys) VALUES ($values)";
 
         if (!$this->query($sql, $fields)->getError()) {
             return $this;
@@ -128,15 +126,32 @@ class DB{
     }
 
     public function update($table, $id, $fields){
+        $field_num = count($fields);
+        $values = '';
+        $x = 1;
 
-    }
+        foreach ($fields as $key => $field) {
+            $values .= "$key = \"$field\"";
+            if ($x < $field_num) {
+                $values .= ',';
+            }
+            $x++;
+        }
+        
+        $sql = "UPDATE $table SET $values WHERE id = $id";
 
-    public function getConnection(){
-        return $this->conn;
+        if (!$this->query($sql, $fields)->getError()) {
+            return $this;
+        }
+        return false;
     }
 
     public function getError(){
         return $this->error;
+    }
+
+    public function getConnection(){
+        return $this->conn;
     }
 
     public function getResults(){
@@ -146,6 +161,7 @@ class DB{
     public function getCount(){
         return $this->count;
     }
+
 }
 
 ?>
