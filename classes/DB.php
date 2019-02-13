@@ -131,7 +131,7 @@ class DB{
         $x = 1;
 
         foreach ($fields as $key => $field) {
-            $values .= "$key = \"$field\"";
+            $values .= "$key = ?";
             if ($x < $field_num) {
                 $values .= ',';
             }
