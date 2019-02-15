@@ -61,6 +61,9 @@ class DB{
                 $this->count = $this->query->rowCount();
             }else{
                 $this->error = true;
+                if(Config::get('app')['display_errors']){
+                    die($this->query->errorInfo()[2]);
+                }
             }            
         }
         return $this;

@@ -23,11 +23,10 @@ if(Input::exists()){
 
         'password'          =>[
             'required'          => true,
-            'min'               => 8,
-            /* DZ - password mora imati min 1 veliko slovo, min jedno malo slovo i min jedan broj*/
-            'uppercase'         => 1,
+            'min'               => 3
+            /* 'uppercase'         => 1,
             'lowercase'         => 1,
-            'number'            => 1
+            'number'            => 1 */
 
         ],
 
@@ -36,8 +35,12 @@ if(Input::exists()){
             'matches'           => 'password'
         ]
     ]); 
-    echo '<pre>';
-    print_r($validate->getErrors());
+
+    if($validate->passed()){
+        Session::flash('success', "You have registered successfully!");
+        header('Location:login.php');
+        exit();
+    }
 }
 
 
@@ -51,6 +54,8 @@ if(Input::exists()){
             </div>
             <div class="panel-body">
                 <form method="POST">
+                <input type="hidden">
+                <!-- implementirati taj csrf token -->
                     <div class="form-group <?php echo ($validation->hasError('name')) ? 'has-error':''; ?>">
                         <label for="name" class="control-label">Name*</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" value="<?php echo Input::get('name') ?>">
