@@ -57,7 +57,7 @@ class DB{
             }
 
             if($this->query->execute()){
-                $this->result = $this->query->fetchAll(Config::get('database')['fetch']);
+                $this->results = $this->query->fetchAll(Config::get('database')['fetch']);
                 $this->count = $this->query->rowCount();
             }else{
                 $this->error = true;
