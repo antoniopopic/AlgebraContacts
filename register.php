@@ -4,7 +4,7 @@ require_once 'core/init.php';
 
 Helper::getHeader('Algebra Contacts', 'main-header');
 
-
+$user = new User();     
 
 $validation = new Validation();
 
@@ -79,7 +79,6 @@ if(Input::exists()){
             <div class="panel-body">
                 <form method="POST">
                 <input type="hidden" name="token" value="<?php echo Token::factory()::generate(); ?>">
-                <!-- implementirati taj csrf token -->
                     <div class="form-group <?php echo ($validation->hasError('name')) ? 'has-error':''; ?>">
                         <label for="name" class="control-label">Name*</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" value="<?php echo Input::get('name') ?>">

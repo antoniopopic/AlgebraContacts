@@ -24,7 +24,7 @@ class DB{
         $dsn = $driver . ':dbname=' . $db_name . ';host=' . $host . ';charset=' . $charset;
 
         try {
-            $this->conn = new PDO($dsn, $user, $pass);
+            $this->conn = new PDO($dsn, $user, $pass, array(PDO::ATTR_PERSISTENT => true));
         } catch (PDOException $e) {
             die($e->getMessage());
         }

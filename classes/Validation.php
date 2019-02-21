@@ -17,10 +17,6 @@ class Validation{
         foreach ($items as $item => $rules) {
             foreach ($rules as $rule => $rule_value) {
                 
-                /* $uppercase = preg_match('@[A-Z]@', $rule);
-                $lowercase = preg_match('@[a-z]@', $rule);
-                $number = preg_match('@[0-9]@', $rule);
-                $pattern = ' ^.*(?=.{7,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$ ';*/
                 $item = escape($item);
                 $value = trim(Input::get($item));
 

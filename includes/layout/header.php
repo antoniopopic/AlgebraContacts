@@ -8,6 +8,4 @@
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
-    
-    
     <div class="container-fluid">

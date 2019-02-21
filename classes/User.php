@@ -1,7 +1,7 @@
 <?php
 
 class User{
-
+    private $conn;
     private $db;
     private $config;
     private $data;
@@ -35,15 +35,47 @@ class User{
             $field = is_numeric($userId) ? 'id' : 'username';
             $data = $this->db->get('*', 'users', [$field, '=', $userId]);
 
-            if ($data->count()) {
+            if ($data->getCount()) {
                 $this->data = $data->getFirst();
                 return true;
             }
         }
         return false;
     }
-    public function logIn($username = null, $password = null){
+    public function logIn($username = null, $password = null){    
 
+        $user = new User();
+
+        $userId = $user->find(Input::get('username'));
+
+        if ($userId) {
+            $this->isLoggedIn=true;
+            return $user;
+        }
+        return false;
+
+
+
+        /*$stmt = $conn->prepare("SELECT * FROM korisnici");
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        foreach($result as $row) {
+            $username = $row['username'];
+            $password = $row['password'];
+            if(Input::get('username') === $username && Input::get('password') === $password) {
+                
+                Redirect::to('dashboard');
+                return check();
+            }  else {
+                Redirect::to('login');
+            } 
+         }
+        return false; 
+        
+
+        }   */
+        
+    
     }
 
     public function data(){
