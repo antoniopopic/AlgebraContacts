@@ -18,8 +18,6 @@ class User{
 
             if($this->find($user)){
                 $this->isLoggedIn = true;
-            }else{
-                //logout
             }
         }
     }
@@ -42,40 +40,24 @@ class User{
         }
         return false;
     }
-    public function logIn($username = null, $password = null){    
-
-        $user = new User();
-
-        $userId = $user->find(Input::get('username'));
-
-        if ($userId) {
-            $this->isLoggedIn=true;
-            return $user;
-        }
-        return false;
-
-
-
-        /*$stmt = $conn->prepare("SELECT * FROM korisnici");
-        $stmt->execute();
-        $result = $stmt->fetchAll();
-        foreach($result as $row) {
-            $username = $row['username'];
-            $password = $row['password'];
-            if(Input::get('username') === $username && Input::get('password') === $password) {
-                
-                Redirect::to('dashboard');
-                return check();
-            }  else {
-                Redirect::to('login');
-            } 
-         }
-        return false; 
-        
-
-        }   */
-        
+    public function login($username, $password){    
     
+        $user = $this->find($username);
+        //echo '<pre>'; var_dump($this->data()->password); die();
+        if($user){
+                        //pwd iz baze === haširani pwd
+            if($this->data()->password === Hash::make($password, $this->data()->salt)){
+
+                Session::put($this->session_name, $this->data()->id);
+                return true;
+            }
+        }
+        return false;        
+    }
+
+    public function logout(){
+        Session::delete($this->session_name);
+        session_destroy();
     }
 
     public function data(){

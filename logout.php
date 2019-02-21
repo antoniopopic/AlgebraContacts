@@ -2,23 +2,15 @@
 
 require_once 'core/init.php';
 
-$user = new User();
-
-if(!$user->check()){
-    Redirect::to('index');
-}
-
 Helper::getHeader('Algebra Contacts', 'main-header');
 
 require 'notifications.php'; 
 
-?>
+$user = new User();
+if($user-check()){
+    $user->logout();
+}
 
-
-<h1>Dashboard</h1>
-
-<?php
-
-Helper::getFooter();
+Redirect::to('index');
 
 ?>

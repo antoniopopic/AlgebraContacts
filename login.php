@@ -7,6 +7,10 @@ Helper::getHeader('Algebra Contacts', 'main-header');
 require 'notifications.php'; 
 
 $user = new User();
+if($user-check()){
+    Redirect::to('dashboard');
+}
+
 $validation = new Validation();
 
 if(Input::exists()){
@@ -22,51 +26,19 @@ if(Input::exists()){
         ]);
         }
         if($validation->passed()){
-            $uName = $_POST['username'];
-            $pWord = $_POST['password'];
+            $username = Input::get('username');
+            $password = Input::get('password');
 
-            $salt = Hash::salt(32);
-            $password = Hash::make(Input::get('password'), $salt);
-        
-            /* if (empty($uName) || empty($pWord)) {
-                echo 'All fields are required!';
-            }  if {*/
-                $login = $user->logIn($uName, $pWord);
-                
-                if (!$login) {
-                    echo '<div class="alert alert-danger">Your username and/or password are incorrect. Please try again.</div>';
-                    
-                } else {
-                    /* echo '<pre>';
-                    var_dump($login); */
-                    Redirect::to('dashboard');
-                    exit();
-                }
-            /* } */
+            $login = $user->login($username, $password);
+
+            if($login){
+                Redirect::to('dashboard');
+            }else{
+                Session::flash('danger', 'Login failed, please try again.');
+                Redirect::to('login');
+            }
         }
-        
-        // $username = (isset($_POST['username']))? $_POST['username'] : false;
-        // $password = (isset($_POST['password']))? $_POST['password'] : false;
-
-         
-        /* $get = $db->get('*', 'users',[
-            'password' => $password
-        ]);  */
-
-        /* try {
-            $user -> User::logIn(Input::get('username'), Input::get('password'));
-        } catch (Exception $e) {
-            Session::flash('danger', $e-getMessage());
-            Redirect::to('login');
-            return false;
-        } */
-        
-
-        /* $username = $user->find(Input::get('username'));
-        if(Input::get('username') == $username && Input::get('password') == $username){
-            header('Location: dashboard.php');   
-        }     
-    }*/
+           
 }
 ?>
 

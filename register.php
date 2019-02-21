@@ -5,6 +5,9 @@ require_once 'core/init.php';
 Helper::getHeader('Algebra Contacts', 'main-header');
 
 $user = new User();     
+if($user-check()){
+    Redirect::to('dashboard');
+}
 
 $validation = new Validation();
 

@@ -40,9 +40,28 @@
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
-              <li><a href="../navbar-static-top/">Static top</a></li>
-              <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+              <?php 
+                $user = new User();
+                if($user->check()){
+              ?>
+              <!-- kada je korisnik logiran-->
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Default <span class="sr-only">(current)
+                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  <?php echo $user->data()->username; ?> <span class="caret"> </span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li> <a href="logout.php">Logout</a></li>
+                </ul>
+              </li>
+              <?php
+                }else{
+              ?>
+              <!-- kada nije korisnik logiran-->
+              <li><a href="login.php">Sign In</a></li>
+              <li><a href="register.php">Register</a></li>
+              <?php
+                }
+              ?>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
