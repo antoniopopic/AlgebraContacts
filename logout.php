@@ -7,7 +7,8 @@ Helper::getHeader('Algebra Contacts', 'main-header');
 require 'notifications.php'; 
 
 $user = new User();
-if($user-check()){
+
+if($user->check()){
     $user->logout();
 }
 

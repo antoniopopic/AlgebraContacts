@@ -5,7 +5,7 @@ require_once 'core/init.php';
 Helper::getHeader('Algebra Contacts', 'main-header');
 
 $user = new User();     
-if($user-check()){
+if($user->check()){
     Redirect::to('dashboard');
 }
 
@@ -57,7 +57,7 @@ if(Input::exists()){
             ]);
     
         } catch (Exception $e) {
-            Session::flash('danger', $e-getMessage());
+            Session::flash('danger', $e->getMessage());
             Redirect::to('register');
             return false;
         }
